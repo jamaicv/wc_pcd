@@ -50,12 +50,15 @@ function wc_pcd_add_payment_option() {
             'type'          => 'number',
             'class'         => array('wc_pcd_montant form-row-wide'),
             'label'         => $wc_pcd_label_text,
-            'step'          => '0.01'
+            'custom_attributes'    => [
+                'step'          => '0.01',
+                'min'           => '0'
+            ]
         ), WC()->checkout->get_value('wc_pcd_montant'));
         echo '<small id="hidden_montant" style="display: none">' . $wc_pcd_price_text . '</small></div></div>';
     }
 }
-add_action('woocommerce_after_order_notes', 'wc_pcd_add_payment_option');
+add_action('woocommerce_before_order_notes', 'wc_pcd_add_payment_option');
 
 function wc_pcd_compute_new_price() {
     global $woocommerce;

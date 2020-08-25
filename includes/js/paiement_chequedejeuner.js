@@ -8,8 +8,29 @@ jQuery(document).ready(function ($) {
             $('#hidden_content').show();
         } else {
             $('#hidden_content').hide();
+            $('#wc_pcd_montant').val(0);
+            $('#wc_pcd_montant').change();
         }
     })
+
+    $('#wc_pcd_montant').on('change', function() {
+        var montant = $(this).val();
+
+        $.ajax({
+            url: wc_pcd_ajax,
+            type: 'POST',
+            data: {
+              'action': 'compute_new_price',
+              'pcd_montant': montant
+            }
+        }).done(function(response) {
+            $('#hidden_montant').text(response);
+            $('#hidden_montant').show();
+            $('body').trigger('update_checkout');
+        }).fail(function(error) {
+            console.log(error);
+        });
+    });
 
     $('#wc_pcd_montant').on('keyup', function() {
         var montant = $(this).val();
