@@ -24,6 +24,7 @@ function wc_pcd_scripts() {
 add_action('woocommerce_after_checkout_form', 'wc_pcd_scripts');
 
 function wc_pcd_add_payment_option() {
+    $plugin_url = plugin_dir_url(__FILE__);
     $wc_pcd_enabled = get_option('wc_pcd_enabled', '1');
     $wc_pcd_title_text = get_option('wc_pcd_title_text', 'Utiliser un moyen de paiement secondaire');
     $wc_pcd_intro_text = get_option('wc_pcd_intro_text', 'Vous pouvez régler une partie de votre commande par chèque déjeuner.');
@@ -42,10 +43,10 @@ function wc_pcd_add_payment_option() {
         </div>';
     } */
     if ($wc_pcd_enabled) {
-        echo '<div id="wc_pcd" class="wc_pcd">
-        <h5 id="wc_pcd_title">' . $wc_pcd_title_text . '</h5> <input id="wc_pcd_display" class="toggle-button" type="checkbox">
+        echo strip_tags('<pre><div id="wc_pcd" class="wc_pcd">
+        <img src="' . $plugin_url . '/includes/img/logo.png' . '" style="width: 6vw;display: inline;margin-right: 10px"> <h5 id="wc_pcd_title">' . $wc_pcd_title_text . '</h5> <input id="wc_pcd_display" class="toggle-button" type="checkbox">
         <div id="hidden_content">
-        <small class="text-muted">' . $wc_pcd_intro_text . '</small>';
+        <small class="text-muted" style="display: none; font-size: 100%">' . $wc_pcd_intro_text . '</small><div>', '<div><img><small><input><h5><pre>');
         woocommerce_form_field('wc_pcd_montant', array(
             'type'          => 'number',
             'class'         => array('wc_pcd_montant form-row-wide'),
@@ -55,10 +56,10 @@ function wc_pcd_add_payment_option() {
                 'min'           => '0'
             ]
         ), WC()->checkout->get_value('wc_pcd_montant'));
-        echo '<small id="hidden_montant" style="display: none">' . $wc_pcd_price_text . '</small></div></div>';
+        echo strip_tags('</div><small id="hidden_montant">' . $wc_pcd_price_text . '</small></div></div></pre>', '<small><div><pre>');
     }
 }
-add_action('woocommerce_before_order_notes', 'wc_pcd_add_payment_option');
+add_action('woocommerce_review_order_before_payment', 'wc_pcd_add_payment_option');
 
 function wc_pcd_compute_new_price() {
     global $woocommerce;
@@ -73,7 +74,7 @@ function wc_pcd_compute_new_price() {
     wp_die();
 }
 add_action('wp_ajax_compute_new_price', 'wc_pcd_compute_new_price');
-add_action('wp_ajax_nopriv_compute_new_pric', 'wc_pcd_compute_new_price');
+add_action('wp_ajax_nopriv_compute_new_price', 'wc_pcd_compute_new_price');
 
 function wc_pcd_add_fee($cart) {
     if (!$_POST || (is_admin() && !is_ajax())) {

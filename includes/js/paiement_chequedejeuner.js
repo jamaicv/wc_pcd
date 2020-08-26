@@ -10,6 +10,7 @@ jQuery(document).ready(function ($) {
             $('#hidden_content').hide();
             $('#wc_pcd_montant').val(0);
             $('#wc_pcd_montant').change();
+            $('#hidden_montant').hide();
         }
     })
 

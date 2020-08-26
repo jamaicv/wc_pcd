@@ -11,6 +11,7 @@
 
 #wc_pcd_title {
     display: inline;
+    font-size: 16px;
 }
 
 #hidden_content {
@@ -27,6 +28,10 @@
   box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
   transition: background-color .5s;
   cursor: pointer;
+}
+
+.wc_pcd .toggle-button:focus {
+  outline: none;
 }
 
 .wc_pcd .toggle-button:checked {
